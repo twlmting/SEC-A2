@@ -4,5 +4,6 @@
 	$publicKey = $details['key'];
 	
 	echo $publicKey;
+	
 
 ?>

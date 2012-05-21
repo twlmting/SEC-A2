@@ -1,9 +1,9 @@
 <?php 
   require("functions.php");
   session_start();
-  $allowed_referer = array("http://yallara.cs.rmit.edu.au/~s3318730/SEC_A2/login.php", "http://yallara.cs.rmit.edu.au/~s3318730/SEC_A2/main.php");
-  $referal = $_SERVER['HTTP_REFERER'];
-  if (in_array($referal, $allowed_referer)) {
+//   $allowed_referer = array("http://yallara.cs.rmit.edu.au/~s3318730/SEC_A2/login.php", "http://yallara.cs.rmit.edu.au/~s3318730/SEC_A2/main.php");
+//   $referal = $_SERVER['HTTP_REFERER'];
+//   if (in_array($referal, $allowed_referer)) {
   
   
   // display the page for normal user login
@@ -16,25 +16,15 @@
   		$line = fgetss($fp);
   		if (!(($line == "") || ($line == null))) {
   			$linearray = explode(":",$line);
-  			if((strnatcasecmp($linearray[1], $username) == 0)) {
-  				$password = $linearray[2];
-  				$address = $linearray[3];
-  				$state = $linearray[4];
-  				$zip = $linearray[5];
-  				$cc = $linearray[6];
-  				$exp = $linearray[7];
-  				$cvv = $linearray[8];
+  			if((strnatcasecmp($linearray[0], $username) == 0)) {
+  				$password = $linearray[1];
   			}
   		}
   	}
   	
-  	$hidden = "XXXX-XXXX-XXXX-";
-  	$lastFour = substr($cc, -4);
-  	$displayCC = $hidden . $lastFour;
-  	
   	echo "<h3>Welcome " . $_SESSION['name'] . "</h3>";
   	echo "<div id='register'>";
-  	echo "<form action='transaction.php' method='POST'>";
+  	echo "<form action='newcert.php' method='POST'>";
   	  echo "<table>";
 	  	echo "<tr><td colspan='2' align='center'>Your Details:</td></tr>";
 	  	echo "<tr>";
@@ -46,35 +36,9 @@
 	  	  echo "<td class='input'><input type='password' name='password' value='$password' readonly='readonly'></input></td>";
 	  	echo "</tr>";
 	  	echo "<tr>";
-	  	  echo "<td class='title'>Address:</td>";
-	  	  echo "<td class='input'><input type='text' name='address' value='$address' readonly='readonly'></input></td>";
-	  	echo "</tr>";
-	  	echo "<tr>";
-	  	  echo "<td class='title'>State:</td>";
-	  	  echo "<td class='input'><input type='text' name='state' value='$state' readonly='readonly'></input></td>";
-	  	echo "</tr>";
-	  	echo "<tr>";
-	  	  echo "<td class='title'>Zip:</td>";
-	  	  echo "<td class='input'><input type='text' name='zip' value='$zip' readonly='readonly'></input></td>";
-	  	echo "</tr>";
-	  	echo "<tr>";
-	  	  echo "<td class='title'>Credit Card Number:</td>";
-	  	  echo "<td class='input'>
-	  	  		  <input type='text' name='displaycc' value='$displayCC' readonly='readonly'></input>
-	  	  		  <input type='hidden' name='cc' value='$cc'></input>
-	  	  		</td>";
-	  	echo "</tr>";
-	  	echo "<tr>";
-	  	  echo "<td class='title'>Expiry Date:</td>";
-	  	  echo "<td class='input'><input type='text' name='exp' value='$exp' readonly='readonly'></input></td>";
-	  	echo "</tr>";
-	  	echo "<tr>";
-	  	  echo "<td class='title'>CVV:</td>";
-	  	  echo "<td class='input'><input type='text' name='cvv' value='$cvv' readonly='readonly'></input></td>";
-	  	echo "</tr>";
-	  	echo "<tr>";
 	  	  echo "<td colspan='2' align='center'>";
-	  		echo "<input type='submit' value='Go to Transaction' name='transaction'></input>";
+	  		echo "<input type='submit' value='New Cert.' name='newcert'></input>";
+	  		echo "<input type='button' value='View All Cert.' name='viewcert'></input>";
 	  		echo "<a href='login.php'><input type='button' value='Logout' name='logout'></input></a>";
 	  		if(isset($_POST["logout"])) {
 	  		  session_destroy();
@@ -115,14 +79,14 @@
 	  echo "</table>";
   	echo "</div>";
   	
-  	// display user recent activities
+  	// display user recent signed certificates
   	echo "<div id='transHistory'>";
   	  echo "<table border='0'>";
   		echo "<tr>";
-  	 	  echo "<td colspan='4' align='center' class='historyTitle'>Recent Transactions</td>";
+  	 	  echo "<td colspan='4' align='center' class='historyTitle'>Recent Validated Certificate</td>";
   		echo "</tr>";
-  		loadUserApprovedTransactions($user);
-  		loadUserFailedTransactions($user);
+  		loadUserCertificate($user);
+//   		loadAllValidatedCertificates($user);
   	  echo "</table>";
   	echo "</div>";
   }
@@ -234,7 +198,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
 	<meta name="description" content="Website of Certificate Management" />
 	<meta name="author" content="Ming Ting, Chen" />
-	<link rel="stylesheet" type="text/css" href="template.css" />
+	<link rel="stylesheet" type="text/css" href="templates.css" />
 	<title>SEC A2 | Main</title>
   </head>
   
@@ -252,18 +216,15 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	</div>
 	<hr />
   	<?php
-  	  if(isset($_POST["transaction"])) {
-  	  	$_SESSION['displaycc'] = $_POST['displaycc'];
-  	  	$_SESSION['cc'] = $_POST['cc'];
-  	  	$_SESSION['exp'] = $_POST['exp'];
-  	  	$_SESSION['cvv'] = $_POST['cvv'];
+  	  if(isset($_POST["newcert"])) {
+  	  	$_SESSION['username'] = $_POST['username'];
   	  }
   	?>
   	<?php
-  	}
-  	else{
-  		header('Location: http://yallara.cs.rmit.edu.au/~s3318730/SEC_A2/login.php');
-  	}
+//   	}
+//   	else{
+//   		header('Location: http://yallara.cs.rmit.edu.au/~s3318730/SEC_A2/login.php');
+//   	}
   	?>
   </body>
 </html>

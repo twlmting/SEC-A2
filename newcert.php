@@ -1,6 +1,7 @@
 <?php 
   require("functions.php");
   session_start();
+  $validForm = true;
 ?>
 <!DOCTYPE html 
 PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -9,14 +10,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
 	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-	<meta name="description" content="Website to Payment Gateway" />
+	<meta name="description" content="Website of Certificate Management" />
 	<meta name="author" content="Ming Ting, Chen" />
 	<link rel="stylesheet" type="text/css" href="template.css" />
 	<title>SEC A2 | Create New Certificate</title>
   </head>
   
   <body>
-  	<h3>Transaction - <strong><?php echo $_SESSION['name']; ?></strong></h3>
+  	<h3>Create New Certificate - <strong><?php echo $_SESSION['name']; ?></strong></h3>
   	<div>
   	  <div id="register">
 	  	<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
@@ -25,41 +26,70 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	  	  	  <td class="title" align="center" colspan="2">New Certificate Details:</td>
 	  	  	</tr>
 	  	  	<tr>
-	  	  	  <td class="title">Credit Card Number:</td>
-	  	  	  <td class="input">
-	  	  	  	<input type="text" name="displaycc" value="<?php echo $_POST['displaycc']; ?>" readonly="readonly"></input>
-	  	  	  	<input type="hidden" name="cc" value="<?php echo $_POST['cc']; ?>" />
-	  	  	  </td>
+	  	  	  <td class="title">Common Name:</td>
+	  	  	  <td class="input"><input type="text" name="commonName" value="<?php echo $_POST['commonName']; ?>"></input></td>
+	  	  	  <td class="error"><?php
+	                  if(isset($_POST["commonName"])) {
+	                  	if(!validateRegistrationText($_POST["commonName"])) {
+	                      $validForm = false;
+	                    }
+	                  } ?>
+			  </td>
 	  	  	</tr>
 	  	  	<tr>
-	  	  	  <td class="title">Expiry Date:</td>
-	  	  	  <td class="input"><input type="text" name="exp" value="<?php echo $_POST['exp']; ?>" readonly="readonly"></input></td>
+	  	  	  <td class="title">Organisation:</td>
+	  	  	  <td class="input"><input type="text" name="org" value="<?php echo $_POST['org']; ?>"></input></td>
+	  	  	  <td class="error"><?php
+	                  if(isset($_POST["org"])) {
+	                  	if(!validateRegistrationText($_POST["org"])) {
+	                      $validForm = false;
+	                    }
+	                  } ?>
+			  </td>
 	  	  	</tr>
 	  	  	<tr>
-	  	  	  <td class="title">CVV:</td>
-	  	  	  <td class="input"><input type="text" name="cvv" value="<?php echo $_POST['cvv']; ?>" readonly="readonly"></input></td>
+	  	  	  <td class="title">Organisation Unit :</td>
+	  	  	  <td class="input"><input type="text" name="orgUnit" value="<?php echo $_POST['orgUnit']; ?>"></input></td>
+	  	  	  <td class="error"><?php
+	                  if(isset($_POST["orgUnit"])) {
+	                  	if(!validateRegistrationText($_POST["orgUnit"])) {
+	                      $validForm = false;
+	                    }
+	                  } ?>
+			  </td>
 	  	  	</tr>
 	  	  	<tr>
-	  	  	  <td class="title">Demo:</td>
-	  	  	  <td class="input"><input type="text" name="demo" value="y" readonly="readonly"></input></td>
+	  	  	  <td class="title">City/Locality:</td>
+	  	  	  <td class="input"><input type="text" name="city" value="<?php echo $_POST['city']; ?>"></input></td>
+	  	  	  <td class="error"><?php
+	                  if(isset($_POST["city"])) {
+	                  	if(!validateRegistrationText($_POST["city"])) {
+	                      $validForm = false;
+	                    }
+	                  } ?>
+			  </td>
 	  	  	</tr>
 	  	  	<tr>
-	  	  	  <td class="title">Action:</td>
-	  	  	  <td class="input"><input type="text" name="action" value="sale" readonly="readonly"></input></td>
+	  	  	  <td class="title">Stat/Province:</td>
+	  	  	  <td class="input"><input type="text" name="state" value="<?php echo $_POST['state']; ?>"></input></td>
+	  	  	  <td class="error"><?php
+	                  if(isset($_POST["state"])) {
+	                  	if(!validateRegistrationText($_POST["state"])) {
+	                      $validForm = false;
+	                    }
+	                  } ?>
+			  </td>
 	  	  	</tr>
 	  	  	<tr>
-	  	  	  <td class="title">Media:</td>
-	  	  	  <td class="input"><input type="text" name="media" value="cc" readonly="readonly"></input></td>
-	  	  	</tr>
-	  	  	<tr>
-	  	  	  <td class="title">Amount:</td>
-	  	  	  <td class="input"><input type="text" name="amount"></input></td>
-	  	  	  <!--  
-	  	  	  <td>
-	  	  	  	<input type="hidden" name="custid" value="s3318730"></input>
-	  	  	  	<input type="hidden" name="password" value="8776e39c09"></input>
-	  	  	  </td>
-	  	  	  -->
+	  	  	  <td class="title">Country/Region:</td>
+	  	  	  <td class="input"><input type="text" name="country" value="<?php echo $_POST['country']; ?>"></input></td>
+	  	  	  <td class="error"><?php
+	                  if(isset($_POST["country"])) {
+	                  	if(!validateRegistrationText($_POST["country"])) {
+	                      $validForm = false;
+	                    }
+	                  } ?>
+			  </td>
 	  	  	</tr>
 	  	  	<tr>
 	  	  	  <td colspan="2" align="center">
@@ -78,72 +108,28 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	  </div>
 	</div>
 	<hr />
-	<div>
+	<div id="registraionCompleted">
   	<?php
-  	  if(isset($_POST["create"])) {
-  	  	$params['name'] = $_SESSION['name'];
-  	  	$params['custid'] = $_POST['custid'];
-	 	$params['password'] = $_POST['password'];
-	 	$params['demo'] = $_POST['demo'];
-	    $params['action'] = $_POST['action'];
-	    $params['media'] = $_POST['media'];
-	    $params['cc'] = $_POST['cc'];
-	    $params['exp'] = $_POST['exp'];
-	    $params['amount'] = $_POST['amount'];
-	    
-  	  	$submit_url = "http://goanna.cs.rmit.edu.au/~ronvs/TCLinkGateway/process.php";
+  	  if(isset($_POST["create"]) && ($validForm == true)) {
+  	  	$username = $_SESSION['username'];
+  	  	$commonName = $_POST['commonName'];
+  	  	$org = $_POST['org'];
+  	  	$orgUnit = $_POST['orgUnit'];
+  	  	$city = $_POST['city'];
+  	  	$state = $_POST['state'];
+  	  	$country = $_POST['country'];
   	  	
-  	  	// Now submit the web form and catch any output from the submission
-  	  	if(!($snoopy->submit($submit_url, $params)))
-  	  		die("Failed fetching document: ".$snoopy->error."\n");
+  	  	createNewCertificate($username, $commonName, $org, $orgUnit, $city, $state, $country);
   	  	
-	    $result = $snoopy->results;
-	    
-	    //  Output will be 'serialized'. Use line below to undo this.
-	    $result = unserialize($snoopy->results);
-	    
-	    $resultUsername = $_SESSION['username'];
-	    $date = date("Y-m-d g:i:s a");
-	    $resultAmount = $_POST['amount'];
-	    $resultStatus = $result['status'];
-	    $ip = $_SERVER['REMOTE_ADDR'];
-	    
-	    if($result['status'] == 'approved') {
-	    	$transID = $result['transid'];
-	    	logTransactionApproved($resultUsername, $date, $transID, $resultStatus, $resultAmount, $ip);
-	    	
-	    	echo "<table>";
-	    	echo "<tr><td class='success'>Transaction was successful!</td></tr>";
-	    	echo "<tr><td class='success'>Your Transaction ID: " . $transID . "</td></tr>";
-	    	echo "</table>";
-	    }
-	    elseif($result['status'] == 'decline') {
-	    	$error = $result['declinetype'];
-	    	logTransactionFailed($resultUsername, $date, $resultAmount, $resultStatus, $error, $ip);
-	    	
-	    	echo "<table>";
-	    	echo "<tr><td class='transError'>Transaction declined!</td></tr>";
-	    	echo "<tr><td class='transError'>Reason: " . $error . "</td></tr>";
-	    	echo "</table>";
-	    }
-  	  	elseif($result['status'] == 'baddata') {
-	    	$error = $result['offenders'];
-	    	logTransactionFailed($resultUsername, $date, $resultAmount, $resultStatus, $error, $ip);
-	    	
-	    	echo "<table>";
-	    	echo "<tr><td class='transError'>Improperly formatted data!</td></tr>";
-	    	echo "<tr><td class='transError'>Reason: " . $error . "</td></tr>";
-	    	echo "</table>";
-	    }
-	    else {
-	    	$error = $result['errortype'];
-	    	logTransactionFailed($resultUsername, $date, $resultAmount, $resultStatus, $error, $ip);
-	    	
-	    	echo "<table>";
-	    	echo "<tr><td class='transError'>An error occurred!</td></tr>";
-	    	echo "<tr><td class='transError'>Reason: " . $error . "</td></tr>";
-	    	echo "</table>";
-	    }
+  	  	echo "<h4>Certificate Created!</h4>";
+  	  	
+  	  	echo "<table border='1'>";
+  	  	  echo "<tr>";
+  	  		echo "<td align='center'>";
+			echo "Congratulation!! Your Certificate has created successfully!<br /><br />";
+  	  		echo "<a href='main.php'><input type='button' value='OK' /></a>";
+  	  		echo "</td>";
+  	  	  echo "</tr>";
   	  }
   	?>
   	</div>

@@ -10,21 +10,21 @@ function validateRegistrationText($field) {
     }
 }
 
-function validateRegistrationNumber($field) {
-	$regexp = "/^[0-9-]+$/";
+// function validateRegistrationNumber($field) {
+// 	$regexp = "/^[0-9-]+$/";
 	
-	if ($field == "") {
-    	echo "This field is required!";
-    	return false;
-    }
-    if(!preg_match($regexp, $field)) {
-        echo "Numeric Only!";
-        return false;
-    }
-    else{
-        return true;
-    }
-}
+// 	if ($field == "") {
+//     	echo "This field is required!";
+//     	return false;
+//     }
+//     if(!preg_match($regexp, $field)) {
+//         echo "Numeric Only!";
+//         return false;
+//     }
+//     else{
+//         return true;
+//     }
+// }
 
 function validateRegistrationUser($field) {
 	$pfile = fopen("data/users.txt", "a+");
@@ -93,9 +93,15 @@ function registerUser($username, $password, $name) {
 		$encryptPass = md5($password);
 
 		fwrite($pfile, "$username:$encryptPass:$name\n");
-	}
-	 
+		
+		//create a new file when an user has registered
+		$cerFile = $username . ".txt";
+		$directory = "data/certificates/";
+		$fp = fopen($directory . $cerFile, 'w');
+		chmod($directory . $cerFile, 0707);
+	} 
 	fclose($pfile);
+	fclose($fp);
 	return $errorText;
 }
 
@@ -110,52 +116,53 @@ function logUserLogin($username, $date, $ip) {
 	fclose($pfile);
 }
 
-function loadUserApprovedTransactions($user) {
-	$fp = fopen("data/log_trans_approved.txt",'r');
-	$match = false;
+function createNewCertificate($username, $commonName, $org, $orgUnit, $city, $state, $country) {
+	$cerFile = $username . ".txt";
+	$directory = "data/certificates/";
+	$fp = fopen($directory . $cerFile, 'w+') or die("File Cannot Open");
+
+	fwrite($fp, "$commonName:$org:$orgUnit:$city:$state:$country\n");
+
+	fclose($fp);
+}
+
+function loadUserCertificate($user) {
+	$cerFile = $user . ".txt";
+	$directory = "data/certificates/";
+	$fp = fopen($directory . $cerFile, 'r') or die("File Cannot Open");
 	
-	while(!feof($fp)) {
-		$line = fgetss($fp);
-		$linearray = explode(",",$line);
-	
-		if((strnatcasecmp($linearray[0], $user) == 0)) {
-				
-			$match = true;
-			break;
-		}
-	}
-	
-	if($match == true) {
-		$fp = fopen("data/log_trans_approved.txt",'r');
-		echo "<tr>";
-		echo "<td colspan='4' class='historyTitle'>Approved Transactions</td>";
-		echo "</tr>";
-		echo "<tr>";
-		echo "<td class='historyTitle'>Date</td>";
-		echo "<td class='historyTitle'>Transaction ID</td>";
-		echo "<td class='historyTitle'>Amount</td>";
-		echo "<td class='historyTitle'>IP</td>";
-		echo "</tr>";
-		
-		while(!feof($fp)) {
-			
-			$line = fgetss($fp);
-			$linearray = explode(",",$line);
-		
-			if((strnatcasecmp($linearray[0], $user) == 0)) {
-					
-				echo "<tr>";
-				echo "<td><input type='text' value='$linearray[1]' readonly='readonly' /></td>";
-				echo "<td><input type='text' value='$linearray[2]' readonly='readonly' /></td>";
-				echo "<td><input type='text' value='$linearray[4]' readonly='readonly' /></td>";
-				echo "<td><input type='text' value='$linearray[5]' readonly='readonly' /></td>";
-				echo "</tr>";
-			}
-		}
-	}
+	$line = fgetss($fp);
+	$linearray = explode(":",$line);
+
+	echo "<tr>";
+	echo "<td class='historyTitle'>Common Name</td>";
+	echo "<td><input type='text' value='$linearray[0]' readonly='readonly' /></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td class='historyTitle'>Organization</td>";
+	echo "<td><input type='text' value='$linearray[1]' readonly='readonly' /></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td class='historyTitle'>Organization Unit</td>";
+	echo "<td><input type='text' value='$linearray[2]' readonly='readonly' /></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td class='historyTitle'>City</td>";
+	echo "<td><input type='text' value='$linearray[3]' readonly='readonly' /></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td class='historyTitle'>State</td>";
+	echo "<td><input type='text' value='$linearray[4]' readonly='readonly' /></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td class='historyTitle'>Country</td>";
+	echo "<td><input type='text' value='$linearray[5]' readonly='readonly' /></td>";
+	echo "</tr>";
 	
 	fclose($fp);
 }
+	
+	
 
 function loadUserFailedTransactions($user) {
 	$fp = fopen("data/log_trans_failed.txt",'r');
@@ -299,6 +306,8 @@ function loadFailedTransactions() {
 	}
 	fclose($fp);
 }
+
+
 
 
 
