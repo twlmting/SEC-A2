@@ -1,0 +1,101 @@
+@charset "UTF-8";
+
+/*****Login Form*****/
+div#login form table {
+	border-spacing:2px;
+	background-color:#F5F5F5;	
+	height:150px;
+}
+
+input.registerButton {
+	color: blue;
+}
+
+td.loginError {
+	color: red;
+	width: 450px;
+}
+
+/*****Registration Form*****/
+div#register form table {
+	border-spacing:2px;
+	background-color:#F5F5F5;	
+	height:200px;
+}
+
+td.title {
+	width: 150px;
+}
+
+td.input {
+	width: 150px;
+}
+
+td.error {
+	width: 150px;
+	color: red;
+}
+
+div#registraionCompleted {
+	width: 450px;
+}
+
+div#registraionCompleted h4 {
+	color: red;
+}
+
+/*****Transaction Form*****/
+td.success {
+	color: blue;
+	width: 450px;
+}
+
+td.transError {
+	color: red;
+	width: 450px;
+}
+
+/*****Admin Page*****/
+div#adminPage {
+	background-color: #F5F5F5;
+	width: 400px;
+}
+
+div#adminPage form table {
+	width: 400px;
+}
+
+/*****User Page*****/
+div#loginHistory {
+	position: absolute;
+	height: 200px;
+	width: 400px;
+	background-color: #F5F5F5;
+	left: 330px;
+	top: 57px;
+}
+
+div#loginHistory table {
+	width: 400px;
+}
+
+div#transHistory {
+	position: absolute;
+	height: 297px;
+	width: 800px;
+	background-color: #F5F5F5;
+	left: 330px;
+	top: 260px;
+}
+
+div#transHistory table {
+	width: 650px;
+}
+
+td.historyTitle {
+	height: 20px;
+}
+
+
+
+
