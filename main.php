@@ -18,15 +18,20 @@
   			$linearray = explode(":",$line);
   			if((strnatcasecmp($linearray[0], $username) == 0)) {
   				$password = $linearray[1];
+  				$name = $linearray[2];
   			}
   		}
   	}
   	
   	echo "<h3>Welcome " . $_SESSION['name'] . "</h3>";
   	echo "<div id='register'>";
-  	echo "<form action='newcert.php' method='POST'>";
+  	echo "<form action='yourcert.php' method='POST'>";
   	  echo "<table>";
 	  	echo "<tr><td colspan='2' align='center'>Your Details:</td></tr>";
+	  	echo "<tr>";
+	  	  echo "<td class='title'>Name:</td>";
+	  	  echo "<td class='input'><input type='text' name='username' value='$name' readonly='readonly'></input></td>";
+	  	echo "</tr>";
 	  	echo "<tr>";
 	  	  echo "<td class='title'>Username:</td>";
 	  	  echo "<td class='input'><input type='text' name='username' value='$username' readonly='readonly'></input></td>";
@@ -35,16 +40,17 @@
 	  	  echo "<td class='title'>Password:</td>";
 	  	  echo "<td class='input'><input type='password' name='password' value='$password' readonly='readonly'></input></td>";
 	  	echo "</tr>";
-	  	echo "<tr>";
-	  	  echo "<td colspan='2' align='center'>";
-	  		echo "<input type='submit' value='New Cert.' name='newcert'></input>";
-	  		echo "<input type='button' value='View All Cert.' name='viewcert'></input>";
-	  		echo "<a href='login.php'><input type='button' value='Logout' name='logout'></input></a>";
-	  		if(isset($_POST["logout"])) {
-	  		  session_destroy();
-	  		}
-	  	  echo "</td>";
-	  	echo "</tr>";
+// 	  	echo "<tr>";
+// 	  	  echo "<td colspan='2' align='center'>";
+// 	  		echo "<a href='newcert.php'><input type='button' value='New Cert.' name='newcert'></input></a>";
+// 	  		echo "<a href='yourcert.php'><input type='button' value='Display Certificate' name='displaycert'></input></a>";
+// 	  		echo "<input type='button' value='View All Cert.' name='viewcert'></input>";
+// 	  		echo "<a href='login.php'><input type='button' value='Logout' name='logout'></input></a>";
+// 	  		if(isset($_POST["logout"])) {
+// 	  		  session_destroy();
+// 	  		}
+// 	  	  echo "</td>";
+// 	  	echo "</tr>";
   	  echo "</table>";
   	echo "</form>";
   	echo "</div>";
@@ -79,14 +85,29 @@
 	  echo "</table>";
   	echo "</div>";
   	
-  	// display user recent signed certificates
-  	echo "<div id='transHistory'>";
-  	  echo "<table border='0'>";
-  		echo "<tr>";
-  	 	  echo "<td colspan='4' align='center' class='historyTitle'>Recent Validated Certificate</td>";
-  		echo "</tr>";
-  		loadUserCertificate($user);
-//   		loadAllValidatedCertificates($user);
+  	//user operation buttons
+  	echo "<div id='userOperation'>";
+  	  echo "<table>";
+  		echo "<tr><td align='center'>User Operation</td></tr>";
+  		echo "<tr><td align='center'>";  
+  		  echo "<a href='newcert.php'><input type='button' value='New Certificate' name='newcert'></input></a>";
+  		echo "</td></tr>";
+  		echo "</td></tr>";
+  		echo "<tr><td align='center'>";
+  		  echo "<input type='button' value='Create Key Pair' name='createkey'></input></a>";
+  		echo "</td></tr>";
+  		echo "<tr><td align='center'>";
+  		  echo "<a href='yourcert.php'><input type='button' value='Display Certificate' name='displaycert'></input></a>";
+  		echo "</td></tr>";
+  		echo "<tr><td align='center'>";
+  		  echo "<input type='button' value='View All Certificate' name='viewcert'></input>";
+  		echo "</td></tr>";
+  		echo "<tr><td align='center'>";
+  		  	echo "<a href='login.php'><input type='button' value='Logout' name='logout'></input></a>";
+  		  	if(isset($_POST["logout"])) {
+  			  session_destroy();
+  		  	}
+  		echo "</td></tr>";
   	  echo "</table>";
   	echo "</div>";
   }
@@ -218,6 +239,12 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   	<?php
   	  if(isset($_POST["newcert"])) {
   	  	$_SESSION['username'] = $_POST['username'];
+  	  }
+  	  elseif(isset($_POST["displaycert"])) {
+  	  	$_SESSION['username'] = $_POST['username'];
+  	  }
+  	  elseif(isset($_POST["createkey"])) {
+  	  	createKeyPair();
   	  }
   	?>
   	<?php

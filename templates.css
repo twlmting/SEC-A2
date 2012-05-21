@@ -71,7 +71,7 @@ div#loginHistory {
 	height: 200px;
 	width: 400px;
 	background-color: #F5F5F5;
-	left: 845px;
+	left: 330px;
 	top: 58px;
 }
 
@@ -84,8 +84,22 @@ div#transHistory {
 	height: 200px;
 	width: 500px;
 	background-color: #F5F5F5;
-	left: 330px;
+	left: 300px;
 	top: 58px;
+}
+
+div#userOperation {
+	position: absolute;
+	height: 200px;
+	width: 200px;
+	background-color: #F5F5F5;
+	left: 745px;
+	top: 58px;
+}
+
+div#userOperation table {
+	height: 200px;
+	width: 200px;
 }
 
 div#transHistory table {

@@ -126,7 +126,7 @@ function createNewCertificate($username, $commonName, $org, $orgUnit, $city, $st
 	fclose($fp);
 }
 
-function loadUserCertificate($user) {
+function loadUserCertificate1($user) {
 	$cerFile = $user . ".txt";
 	$directory = "data/certificates/";
 	$fp = fopen($directory . $cerFile, 'r') or die("File Cannot Open");
@@ -159,6 +159,24 @@ function loadUserCertificate($user) {
 	echo "<td><input type='text' value='$linearray[5]' readonly='readonly' /></td>";
 	echo "</tr>";
 	
+	fclose($fp);
+}
+
+function loadUserCertificate($user) {
+	$cerFile = $user . ".txt";
+	$directory = "data/certificates/";
+	$fp = fopen($directory . $cerFile, 'r') or die("File Cannot Open");
+
+	$line = fgetss($fp);
+	$linearray = explode(":",$line);
+
+	$_POST['commonName'] = $linearray[0];
+	$_POST['org'] = $linearray[1];
+	$_POST['orgUnit'] = $linearray[2];
+	$_POST['city'] = $linearray[3];
+	$_POST['state'] = $linearray[4];
+	$_POST['country'] = $linearray[5];
+
 	fclose($fp);
 }
 	
