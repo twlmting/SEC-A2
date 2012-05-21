@@ -94,7 +94,7 @@
   		echo "</td></tr>";
   		echo "</td></tr>";
   		echo "<tr><td align='center'>";
-  		  echo "<input type='button' value='Create Key Pair' name='createkey'></input></a>";
+  		  echo "<a href='yourkey.php'><input type='submit' value='Create Key Pair' name='createkey'></input></a>";
   		echo "</td></tr>";
   		echo "<tr><td align='center'>";
   		  echo "<a href='yourcert.php'><input type='button' value='Display Certificate' name='displaycert'></input></a>";
@@ -244,7 +244,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   	  	$_SESSION['username'] = $_POST['username'];
   	  }
   	  elseif(isset($_POST["createkey"])) {
-  	  	createKeyPair();
+  	  	$_SESSION['username'] = $_POST['username'];
   	  }
   	?>
   	<?php
