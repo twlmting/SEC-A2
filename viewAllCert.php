@@ -13,7 +13,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<meta name="description" content="Website of Certificate Management" />
 	<meta name="author" content="Ming Ting, Chen" />
 	<link rel="stylesheet" type="text/css" href="templates.css" />
-	<title>SEC A2 | Your Certificate</title>
+	<title>SEC A2 | View All Certificates</title>
   </head>
   
   <body>
@@ -60,7 +60,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	  	  	</tr>
 	  	  	<tr>
 	  	  	  <td colspan="2" align="center">
-	  	  	  	<input type="submit" name="sign" value="Sign It" class="registerButton"></input>
 	  	  	  	<a href="main.php"><input type="button" value="Back" name="back"></input></a>
 	  	  	  </td>
 	  	  	</tr>
@@ -71,30 +70,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<hr />
 	<div id="registraionCompleted">
   	<?php
-  	  if(isset($_POST["sign"]) && ($validForm == true)) {
-  	  	$username = $_SESSION['username'];
-  	  	$commonName = $_POST['commonName'];
-  	  	$org = $_POST['org'];
-  	  	$orgUnit = $_POST['orgUnit'];
-  	  	$city = $_POST['city'];
-  	  	$state = $_POST['state'];
-  	  	$country = $_POST['country'];
-  	  	$secret = $_POST['secret'];
-  	  	
-//   	  	signCertificate($username, $commonName, $org, $orgUnit, $city, $state, $country, $secret);
 		
-  	  	displayKey($username);
-  	  	
-  	  	echo "<h4>Certificate Signed!</h4>";
-  	  	
-  	  	echo "<table border='1'>";
-  	  	  echo "<tr>";
-  	  		echo "<td align='center'>";
-			echo "Congratulation!! Your Certificate has been signed successfully!<br /><br />";
-  	  		echo "<a href='main.php'><input type='button' value='OK' /></a>";
-  	  		echo "</td>";
-  	  	  echo "</tr>";
-  	  }
+  	  	displayAllCertificates();
+  	  
   	?>
   	</div>
   </body>

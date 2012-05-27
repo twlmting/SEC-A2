@@ -100,7 +100,7 @@
   		  echo "<a href='yourcert.php'><input type='button' value='Display Certificate' name='displaycert'></input></a>";
   		echo "</td></tr>";
   		echo "<tr><td align='center'>";
-  		  echo "<input type='button' value='View All Certificate' name='viewcert'></input>";
+  		  echo "<a href='viewAllCert.php'><input type='button' value='View All Certificate' name='viewcert'></input></a>";
   		echo "</td></tr>";
   		echo "<tr><td align='center'>";
   		  	echo "<a href='login.php'><input type='button' value='Logout' name='logout'></input></a>";
@@ -244,6 +244,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   	  	$_SESSION['username'] = $_POST['username'];
   	  }
   	  elseif(isset($_POST["createkey"])) {
+  	  	$_SESSION['username'] = $_POST['username'];
+  	  }
+  	  elseif(isset($_POST["viewcert"])) {
   	  	$_SESSION['username'] = $_POST['username'];
   	  }
   	?>

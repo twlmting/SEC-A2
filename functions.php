@@ -87,6 +87,55 @@ function logUserLogin($username, $date, $ip) {
 	fclose($pfile);
 }
 
+function displayAllCertificates() {
+// 	if ($handle = opendir('data/certificates/')) {
+		$directory = "data/certificates/";
+		$files1 = scandir($directory);
+		$cerFile = $files1 . ".txt";
+		
+		
+		echo $files1;
+		
+		$fp = fopen($directory . $cerFile, 'r');
+		
+		$line = fgetss($fp);
+		$linearray = explode(":",$line);
+		
+		$com = $linearray[0];
+		$org = $linearray[1];
+		$orgUnit = $linearray[2];
+		$city = $linearray[3];
+		$state = $linearray[4];
+		$country = $linearray[5];
+		
+		fclose($fp);
+		
+// 		while($handle != null) {
+// 			echo "<table>";
+// 			echo "<tr>";
+// 			echo "<td>" . $com . "</td>";
+// 			echo "</tr>";
+// 			echo "<tr>";
+// 			echo "<td>" . $org . "</td>";
+// 			echo "</tr>";
+// 			echo "<tr>";
+// 			echo "<td>" . $orgUnit . "</td>";
+// 			echo "</tr>";
+// 			echo "<tr>";
+// 			echo "<td>" . $city . "</td>";
+// 			echo "</tr>";
+// 			echo "<tr>";
+// 			echo "<td>" . $state . "</td>";
+// 			echo "</tr>";
+// 			echo "<tr>";
+// 			echo "<td>" . $country . "</td>";
+// 			echo "</tr>";
+// 		}
+// 	}
+	
+// 	closedir($handle);
+}
+
 function createNewCertificate($username, $commonName, $org, $orgUnit, $city, $state, $country) {
 	$cerFile = $username . ".txt";
 	$directory = "data/certificates/";
@@ -112,50 +161,38 @@ function createKeyPair($username) {
 		$file = "data/keypairs/" . $username . ".txt";
 		file_put_contents($file, $pubKey);
 		
-		echo $file;
-		echo "Create Done!\n";
-		echo $pubKey;
+		echo $file . "<br />";
+		echo $pubKey . "<br />";
+		echo "Key Created! <br />";
 	}
 	else {
 		echo "Error";
 	}
 }
 
-// function loadUserCertificate1($user) {
-// 	$cerFile = $user . ".txt";
-// 	$directory = "data/certificates/";
-// 	$fp = fopen($directory . $cerFile, 'r') or die("File Cannot Open");
+function signCertificate($username, $commonName, $org, $orgUnit, $city, $state, $country, $secret) {
+	$dn = array("commonName" => $commonName, "org" => $org, "orgUnit" => $orgUnit, 
+				"city" => $city, "state" => $state, "country" => $country);
 	
-// 	$line = fgetss($fp);
-// 	$linearray = explode(":",$line);
-
-// 	echo "<tr>";
-// 	echo "<td class='historyTitle'>Common Name</td>";
-// 	echo "<td><input type='text' value='$linearray[0]' readonly='readonly' /></td>";
-// 	echo "</tr>";
-// 	echo "<tr>";
-// 	echo "<td class='historyTitle'>Organization</td>";
-// 	echo "<td><input type='text' value='$linearray[1]' readonly='readonly' /></td>";
-// 	echo "</tr>";
-// 	echo "<tr>";
-// 	echo "<td class='historyTitle'>Organization Unit</td>";
-// 	echo "<td><input type='text' value='$linearray[2]' readonly='readonly' /></td>";
-// 	echo "</tr>";
-// 	echo "<tr>";
-// 	echo "<td class='historyTitle'>City</td>";
-// 	echo "<td><input type='text' value='$linearray[3]' readonly='readonly' /></td>";
-// 	echo "</tr>";
-// 	echo "<tr>";
-// 	echo "<td class='historyTitle'>State</td>";
-// 	echo "<td><input type='text' value='$linearray[4]' readonly='readonly' /></td>";
-// 	echo "</tr>";
-// 	echo "<tr>";
-// 	echo "<td class='historyTitle'>Country</td>";
-// 	echo "<td><input type='text' value='$linearray[5]' readonly='readonly' /></td>";
-// 	echo "</tr>";
+	$privkeypass = $secret;
+	$numberofdays = 365;
 	
+	$privkey = openssl_pkey_new(array('private_key_bits' => 1024,'private_key_type' => OPENSSL_KEYTYPE_RSA));
+	$csr = openssl_csr_new($dn, $privkey);
+	$sscert = openssl_csr_sign($csr, null, $privkey, $numberofdays);
+	openssl_x509_export($sscert, $publickey);
+	openssl_pkey_export($privkey, $privatekey, $privkeypass);
+	openssl_csr_export($csr, $csrStr);
+	
+// 	$file = "data/keypairs/" . $username . ".txt";
+// 	file_put_contents($file, $privkey);
+	
+// 	$fp = fopen("../PKI/private/$userid.key","w");
+// 	fwrite($fp,$privatekey);
 // 	fclose($fp);
-// }
+	$file = "data/certificates/" . $username . ".txt";
+	file_put_contents($file, $publickey);
+}
 
 function loadUserCertificate($user) {
 	$cerFile = $user . ".txt";

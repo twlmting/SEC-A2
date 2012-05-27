@@ -12,7 +12,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
 	<meta name="description" content="Website of Certificate Management" />
 	<meta name="author" content="Ming Ting, Chen" />
-	<link rel="stylesheet" type="text/css" href="template.css" />
+	<link rel="stylesheet" type="text/css" href="templates.css" />
 	<title>SEC A2 | Create New Certificate</title>
   </head>
   
